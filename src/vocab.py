@@ -1,49 +1,12 @@
 """
-Utility functions
+Vocab class
 """
-import os
-import argparse
-import pickle
-import numpy as np
-import random
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-# %pylab inline
-
-
-"""
-Preprocess the reviews.
-"""
-import argparse
-import json
-import os
-import pickle
-import re
-import tensorflow as tf
-import numpy as np
-
-from unidecode import (
-    unidecode,
-)
-
-from random import (
-    shuffle,
-)
-
-from tqdm import (
-    tqdm,
-)
-
-from collections import (
-    Counter,
-)
 
 UNKNOWN_TOKEN = '<unk>'
 PAD_TOKEN = '<pad>'
 
 
-
-class Vocab():
+class Vocab:
     """
     Class for processing tokens to ids and vice versa.
     """
@@ -106,6 +69,7 @@ class Vocab():
             return UNKNOWN_TOKEN
         return self._id_to_token[_id]
 
+
 def ids_to_tokens(ids_list, vocab):
     """
     Convert a list of ids to tokens.
@@ -122,41 +86,3 @@ def ids_to_tokens(ids_list, vocab):
             continue
         answer.append(token)
     return answer
-
-
-
-def sample_data(data_path, basedir):
-    """
-    Sample format of the processed
-    data from data.py
-    Args:
-        data_path: path for train.p|valid.p
-    """
-
-    # global basedir
-
-    with open(data_path, 'rb') as f:
-        entries = pickle.load(f)
-
-    # Choose a random sample
-    rand_index = random.randint(0, len(entries))
-
-    # Prepare vocab
-    vocab_file = os.path.join(basedir, 'data/processed_reviews/vocab.txt')
-    vocab = Vocab(vocab_file, verbose=False)
-
-    # Sample
-    (processed_review,
-     review_seq_len,
-     label) = entries[rand_index]
-
-    print ("==> Number of entries:", len(entries))
-    print ("==> Random index:", rand_index)
-    print ("==> Processed Review:", processed_review)
-    print ("==> Review Len:", review_seq_len)
-    print ("==> Label:", label)
-    print ("==> See if processed review makes sense:",
-        ids_to_tokens(
-            processed_review,
-            vocab=vocab,
-            ))

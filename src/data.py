@@ -1,4 +1,12 @@
 import pickle
+import random
+import os
+
+from src.vocab import (
+    Vocab,
+    ids_to_tokens
+)
+
 
 def generate_batch(features, seq_lens, batch_size):
     """
@@ -50,3 +58,39 @@ def generate_epoch(data_path, num_epochs, batch_size):
     for epoch_num in range(num_epochs):
         yield generate_batch(features, seq_lens, batch_size)
 
+
+def sample_data(data_path, basedir, specified_index=None):
+    """
+    Sample format of the processed
+    data from data.py
+    Args:
+        data_path: path for train.p|valid.p
+    """
+
+    # global basedir
+
+    with open(data_path, 'rb') as f:
+        entries = pickle.load(f)
+
+    # Choose a random sample
+    rand_index = random.randint(0, len(entries))
+
+    # Prepare vocab
+    vocab_file = os.path.join(basedir, 'data/processed_reviews/vocab.txt')
+    vocab = Vocab(vocab_file, verbose=False)
+
+    # Sample
+    (processed_review,
+     review_seq_len,
+     label) = entries[rand_index]
+
+    print("==> Number of entries:", len(entries))
+    print("==> Random index:", rand_index)
+    print("==> Processed Review:", processed_review)
+    print("==> Review Len:", review_seq_len)
+    print("==> Label:", label)
+    print("==> See if processed review makes sense:",
+          ids_to_tokens(
+              processed_review,
+              vocab=vocab,
+          ))

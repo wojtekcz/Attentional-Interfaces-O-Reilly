@@ -1,18 +1,14 @@
-import argparse
 import os
-import tensorflow as tf
 import numpy as np
-import time
 import pickle
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-
-from tqdm import (
-    tqdm,
+from src.vocab import (
+    Vocab,
+    ids_to_tokens
 )
 
-from utility import *
 
 def plot_attn(input_sentence, attentions, num_rows, save_loc=None):
     """
@@ -116,6 +112,7 @@ def get_attn_inputs(FLAGS, review, review_len, raw_attn_scores, basedir):
 
     return input_sentence, plot_attn_scores
 
+
 def process_sample_attn(FLAGS, basedir):
     """
     Use plot_attn from utils.py to visualize
@@ -153,4 +150,3 @@ def process_sample_attn(FLAGS, basedir):
         num_rows=FLAGS.num_rows,
         save_loc=None,
         )
-

@@ -7,7 +7,6 @@ def plot_metrics(FLAGS, basedir):
     """
     Plot the loss and accuracy for train|test.
     """
-    import seaborn as sns
 
     # Load metrics from file
     metrics_file = os.path.join(basedir, FLAGS.ckpt_dir, 'metrics.p')

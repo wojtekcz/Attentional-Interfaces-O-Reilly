@@ -3,25 +3,12 @@ Operation functions for model.py
 """
 import tensorflow as tf
 import numpy as np
+import logging
 
-from tensorflow.contrib.layers.python.layers import (
-    utils,
-)
-
-from tensorflow.python.framework import (
-    ops,
-    tensor_shape,
-)
 
 from tensorflow.python.ops import (
-        gen_array_ops,
         array_ops,
-        clip_ops,
-        embedding_ops,
         init_ops,
-        math_ops,
-        nn_ops,
-        partitioned_variables,
         variable_scope as vs,
 )
 
@@ -30,11 +17,6 @@ from tensorflow.python.ops.math_ops import (
         tanh,
 )
 
-from tensorflow.python.util import (
-    nest,
-)
-
-import logging
 
 def _xavier_weight_init(nonlinearity='tanh'):
     """
@@ -108,6 +90,7 @@ def _linear(args, output_size, bias, bias_start=0.0,
             result_1 = tf.add(result_1, b_1)
     return result_1
 
+
 def ln(inputs, epsilon=1e-5, scope=None):
 
     """ Computer layer norm given an input tensor. We get in an input of shape
@@ -127,6 +110,7 @@ def ln(inputs, epsilon=1e-5, scope=None):
     LN = scale * (inputs - mean) / tf.sqrt(var + epsilon) + shift
 
     return LN
+
 
 class custom_GRUCell(tf.contrib.rnn.RNNCell):
         """Gated Recurrent Unit cell (cf. http://arxiv.org/abs/1406.1078)."""
@@ -165,6 +149,7 @@ class custom_GRUCell(tf.contrib.rnn.RNNCell):
                             self._num_units, True))
                 new_h = u * state + (1 - u) * c
             return new_h, new_h
+
 
 def add_dropout_and_layers(single_cell, keep_prob, num_layers):
     """
